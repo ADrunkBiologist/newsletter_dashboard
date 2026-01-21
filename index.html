@@ -62,7 +62,6 @@
       background: var(--topbar);
       border-bottom: 1px solid var(--topbarBorder);
     }
-
     .topbarInner{
       max-width: var(--max);
       margin: 0 auto;
@@ -72,14 +71,12 @@
       justify-content: space-between;
       gap: 14px;
     }
-
     .brandTitle{
       display: flex;
       flex-direction: column;
       gap: 2px;
       min-width: 0;
     }
-
     .brandTitle .title{
       font-size: 14px;
       letter-spacing: -0.02em;
@@ -88,7 +85,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .brandTitle .subtitle{
       font-size: 12px;
       color: var(--muted);
@@ -96,14 +92,12 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .topbarRight{
       display: flex;
       align-items: center;
       gap: 10px;
       flex: 0 0 auto;
     }
-
     .pill{
       display: inline-flex;
       align-items: center;
@@ -116,7 +110,6 @@
       color: var(--muted);
       white-space: nowrap;
     }
-
     .btn{
       appearance: none;
       border: 1px solid var(--pillBorder);
@@ -169,8 +162,6 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
-
-    /* brand glow */
     .section::before{
       content: "";
       position: absolute;
@@ -187,30 +178,84 @@
       padding: 22px;
       align-items: stretch;
     }
-
     .section[data-layout="logo-left"] .sectionInner{ flex-direction: row; }
     .section[data-layout="logo-right"] .sectionInner{ flex-direction: row-reverse; }
 
-    /* Logos without frames */
-    .brand{
-      flex: 0 0 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 6px;
-      min-height: 190px;
+    /* Cover card (replaces logo) */
+    .cover{
+      flex: 0 0 360px;
+      min-height: 200px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+      background:
+        radial-gradient(900px 240px at 10% 0%, var(--brandGlow, rgba(0,0,0,.10)), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.04));
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    @media (prefers-color-scheme: dark){
+      .cover{ border-color: rgba(255,255,255,.14); }
     }
 
-    .brand img{
-      max-width: 290px;
-      max-height: 120px;
-      object-fit: contain;
-      opacity: .98;
+    .coverImg{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      filter: saturate(1.05) contrast(1.02);
+      opacity: 0; /* fades in when loaded */
+      transition: opacity .25s ease;
+    }
+    .cover.has-image .coverImg{ opacity: 1; }
+
+    /* overlay for readability */
+    .cover::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.10) 65%),
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
+      mix-blend-mode: multiply;
+      z-index: 1;
+      pointer-events:none;
+      opacity: .85;
+    }
+    @media (prefers-color-scheme: dark){
+      .cover::after{
+        opacity: .92;
+        background:
+          linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.10) 65%),
+          linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.70));
+      }
     }
 
-    /* Make NYT logo a bit less massive vertically */
-    .brand img.nyt{
-      max-height: 92px;
+    .coverTitle{
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      z-index: 2;
+      font-weight: 950;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 10px 30px rgba(0,0,0,.45);
+      font-size: 34px;
+    }
+    .coverSub{
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 10px;
+      transform: translateY(44px);
+      z-index: 2;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      letter-spacing: -0.01em;
     }
 
     .content{
@@ -228,7 +273,6 @@
       gap: 12px;
       padding: 2px 2px 6px;
     }
-
     .metaRow h2{
       margin: 0;
       font-size: 16px;
@@ -238,7 +282,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .status{
       color: var(--muted);
       font-size: 12px;
@@ -266,7 +309,6 @@
       position: relative;
       overflow: hidden;
     }
-
     @media (prefers-color-scheme: dark){
       .item{
         border-color: rgba(255,255,255,.12);
@@ -278,7 +320,6 @@
       }
     }
 
-    /* brand accent bar per item */
     .item::before{
       content:"";
       position:absolute;
@@ -295,7 +336,7 @@
     }
 
     .titleLink{
-      font-size: 16.5px;   /* bigger titles */
+      font-size: 16.5px;
       font-weight: 680;
       letter-spacing: -0.012em;
       min-width: 0;
@@ -306,7 +347,6 @@
       padding-left: 8px;
       line-height: 1.25;
     }
-
     .titleLink a{
       color: inherit;
       text-decoration: none;
@@ -327,19 +367,17 @@
       padding: 6px 0 0;
     }
 
-    /* Small quality-of-life: reduce motion if user prefers */
     @media (prefers-reduced-motion: reduce){
-      .item, .btn{ transition: none; }
+      .item, .btn, .coverImg{ transition: none; }
       .item:hover, .btn:hover{ transform: none; }
     }
 
-    /* Mobile */
-    @media (max-width: 900px){
+    @media (max-width: 980px){
       .wrap{ padding: 8px 12px 48px; }
       .topbarInner{ padding: 12px 12px; }
       .sectionInner{ flex-direction: column !important; }
-      .brand{ flex: 0 0 auto; min-height: 110px; }
-      .brand img{ max-width: 320px; max-height: 120px; }
+      .cover{ flex: 0 0 auto; min-height: 190px; }
+      .coverTitle{ font-size: 30px; }
       .titleLink{ white-space: normal; }
       .item{ align-items: flex-start; }
       header{ padding-top: 22px; }
@@ -374,9 +412,10 @@
       data-layout="logo-left"
       style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
       <div class="sectionInner">
-        <div class="brand" aria-label="NYTimes logo">
-          <img class="nyt" alt="The New York Times"
-               src="https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg">
+        <div class="cover" id="cover-nyt">
+          <img class="coverImg" id="coverImg-nyt" alt="NYT cover" />
+          <div class="coverTitle">NYTimes</div>
+          <div class="coverSub" id="coverSub-nyt"></div>
         </div>
 
         <div class="content">
@@ -394,9 +433,10 @@
       data-layout="logo-right"
       style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
       <div class="sectionInner">
-        <div class="brand" aria-label="The Economist logo">
-          <img alt="The Economist"
-               src="https://upload.wikimedia.org/wikipedia/commons/6/65/The_Economist_Logo.svg">
+        <div class="cover" id="cover-economist">
+          <img class="coverImg" id="coverImg-economist" alt="Economist cover" />
+          <div class="coverTitle">The Economist</div>
+          <div class="coverSub" id="coverSub-economist"></div>
         </div>
 
         <div class="content">
@@ -409,15 +449,15 @@
       </div>
     </section>
 
-    <!-- The Verge (purple + logo that always renders) -->
+    <!-- The Verge (purple) -->
     <section class="section"
       data-layout="logo-left"
       style="--brandGlow: rgba(175, 0, 255, .22); --brandLine: rgba(175, 0, 255, .72); --glow-x: 20%;">
       <div class="sectionInner">
-        <div class="brand" aria-label="The Verge logo">
-          <!-- Robust: use The Verge touch icon PNG (always visible) -->
-          <img alt="The Verge"
-               src="https://www.theverge.com/apple-touch-icon.png">
+        <div class="cover" id="cover-verge">
+          <img class="coverImg" id="coverImg-verge" alt="The Verge cover" />
+          <div class="coverTitle">The Verge</div>
+          <div class="coverSub" id="coverSub-verge"></div>
         </div>
 
         <div class="content">
@@ -438,12 +478,13 @@
 
   <script>
     const FEEDS = [
-      { key: "nyt", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
-      { key: "verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
+      { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
+      { key: "economist", name: "The Economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
+      { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
     ];
 
     const MAX_ITEMS = 10;
+    const AUTO_REFRESH_MINUTES = 20;
 
     function formatArticleDate(dateStr) {
       const d = new Date(dateStr);
@@ -493,6 +534,58 @@
       });
     }
 
+    function extractImageFromDescription(html) {
+      if (!html || typeof html !== "string") return "";
+      const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+      return m ? m[1] : "";
+    }
+
+    function extractImage(item) {
+      // rss2json commonly provides:
+      // - item.enclosure.link
+      // - item.thumbnail
+      // - item.description (may include <img ...>)
+      // - sometimes item.content contains images
+      if (item?.enclosure?.link) return item.enclosure.link;
+      if (typeof item?.thumbnail === "string" && item.thumbnail) return item.thumbnail;
+      if (typeof item?.enclosure === "string") return item.enclosure;
+      const fromDesc = extractImageFromDescription(item?.description);
+      if (fromDesc) return fromDesc;
+      const fromContent = extractImageFromDescription(item?.content);
+      if (fromContent) return fromContent;
+      return "";
+    }
+
+    function setCover(key, newestItem) {
+      const cover = document.getElementById(`cover-${key}`);
+      const img = document.getElementById(`coverImg-${key}`);
+      const sub = document.getElementById(`coverSub-${key}`);
+
+      if (!cover || !img) return;
+
+      const imgUrl = newestItem ? extractImage(newestItem) : "";
+      const dateTxt = newestItem ? formatArticleDate(newestItem.pubDate || newestItem.published || newestItem.date || "") : "";
+
+      if (sub) {
+        sub.textContent = dateTxt ? `Latest: ${dateTxt}` : "";
+      }
+
+      if (!imgUrl) {
+        // No image found → keep gradient only
+        cover.classList.remove("has-image");
+        img.removeAttribute("src");
+        return;
+      }
+
+      img.onload = () => cover.classList.add("has-image");
+      img.onerror = () => {
+        cover.classList.remove("has-image");
+        img.removeAttribute("src");
+      };
+
+      img.src = imgUrl;
+    }
+
     async function fetchViaRss2Json(rssUrl) {
       const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
       const res = await fetch(endpoint, { cache: "no-store" });
@@ -506,11 +599,7 @@
       const el = document.getElementById("lastRefresh");
       if (!el) return;
       const now = new Date();
-      const txt = new Intl.DateTimeFormat(undefined, {
-        weekday:"short",
-        hour:"2-digit",
-        minute:"2-digit"
-      }).format(now);
+      const txt = new Intl.DateTimeFormat(undefined, { weekday:"short", hour:"2-digit", minute:"2-digit" }).format(now);
       el.textContent = `Last refresh: ${txt}`;
     }
 
@@ -519,10 +608,7 @@
       if (!el) return;
       const now = new Date();
       el.textContent = new Intl.DateTimeFormat(undefined, {
-        weekday:"long",
-        year:"numeric",
-        month:"long",
-        day:"numeric"
+        weekday:"long", year:"numeric", month:"long", day:"numeric"
       }).format(now);
     }
 
@@ -531,11 +617,13 @@
         setStatus(feed.key, "Updating…");
         const items = await fetchViaRss2Json(feed.rssUrl);
         setItems(feed.key, items);
+        setCover(feed.key, items?.[0] || null);
         setStatus(feed.key, "Updated");
       } catch (err) {
         console.error(feed.key, err);
         setStatus(feed.key, "Couldn’t load");
         setItems(feed.key, []);
+        setCover(feed.key, null);
       }
     }
 
@@ -551,15 +639,11 @@
       btn?.removeAttribute("disabled");
     }
 
-    // Nice extra: auto-refresh every 20 minutes (keeps it fresh without spamming rss2json)
-    const AUTO_REFRESH_MINUTES = 20;
-
     // Init
     setTodayLine();
     refreshAll();
     setInterval(refreshAll, AUTO_REFRESH_MINUTES * 60 * 1000);
 
-    // Manual refresh button
     document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
   </script>
 </body>
