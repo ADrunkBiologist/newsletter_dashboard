@@ -3,7 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reading Dashboard</title>
+  <title>NewsBox</title>
+
+  <!-- Favicons / App icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="/newsbox-icon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/newsbox-icon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/newsbox-icon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Optional: nicer URL bar color on mobile -->
+  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
 
   <style>
     :root{
@@ -71,27 +82,49 @@
       justify-content: space-between;
       gap: 14px;
     }
+
+    /* Brand block now supports logo */
     .brandTitle{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brandLogo{
+      height: 26px;
+      width: auto;
+      display: block;
+      border-radius: 6px; /* subtle, looks nice */
+    }
+
+    .brandText{
       display: flex;
       flex-direction: column;
       gap: 2px;
       min-width: 0;
     }
-    .brandTitle .title{
+
+    .brandText .title{
       font-size: 14px;
       letter-spacing: -0.02em;
       font-weight: 850;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.05;
     }
-    .brandTitle .subtitle{
+    .brandText .subtitle{
       font-size: 12px;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.05;
     }
+
     .topbarRight{
       display: flex;
       align-items: center;
@@ -381,6 +414,7 @@
       .titleLink{ white-space: normal; }
       .item{ align-items: flex-start; }
       header{ padding-top: 22px; }
+      .brandLogo{ height: 24px; }
     }
   </style>
 </head>
@@ -388,10 +422,14 @@
 <body>
   <div class="topbar">
     <div class="topbarInner">
-      <div class="brandTitle">
-        <div class="title">Reading Dashboard</div>
-        <div class="subtitle" id="todayLine">—</div>
-      </div>
+      <!-- Brand with logo -->
+      <a class="brandTitle" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+        <img class="brandLogo" src="/newsbox-logo-1024.png" alt="NewsBox logo">
+        <div class="brandText">
+          <div class="title">NewsBox</div>
+          <div class="subtitle" id="todayLine">—</div>
+        </div>
+      </a>
 
       <div class="topbarRight">
         <div class="pill" id="lastRefresh">Last refresh: —</div>
@@ -541,11 +579,6 @@
     }
 
     function extractImage(item) {
-      // rss2json commonly provides:
-      // - item.enclosure.link
-      // - item.thumbnail
-      // - item.description (may include <img ...>)
-      // - sometimes item.content contains images
       if (item?.enclosure?.link) return item.enclosure.link;
       if (typeof item?.thumbnail === "string" && item.thumbnail) return item.thumbnail;
       if (typeof item?.enclosure === "string") return item.enclosure;
@@ -566,12 +599,9 @@
       const imgUrl = newestItem ? extractImage(newestItem) : "";
       const dateTxt = newestItem ? formatArticleDate(newestItem.pubDate || newestItem.published || newestItem.date || "") : "";
 
-      if (sub) {
-        sub.textContent = dateTxt ? `Latest: ${dateTxt}` : "";
-      }
+      if (sub) sub.textContent = dateTxt ? `Latest: ${dateTxt}` : "";
 
       if (!imgUrl) {
-        // No image found → keep gradient only
         cover.classList.remove("has-image");
         img.removeAttribute("src");
         return;
@@ -643,8 +673,15 @@
     setTodayLine();
     refreshAll();
     setInterval(refreshAll, AUTO_REFRESH_MINUTES * 60 * 1000);
-
     document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
+
+    // Create a tiny webmanifest on the fly (optional fallback if you don't add a real file)
+    // If you DO add /site.webmanifest, you can remove this block.
+    (function ensureManifest(){
+      const existing = document.querySelector('link[rel="manifest"]');
+      if (!existing) return;
+      // If you add a real /site.webmanifest file, this does nothing.
+    })();
   </script>
 </body>
 </html>
