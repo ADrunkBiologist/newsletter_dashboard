@@ -1,390 +1,390 @@
 <!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NewsBox</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NewsBox</title>
 
-  <!-- Favicons / App icons -->
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="16x16" href="/newsbox-icon-16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/newsbox-icon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/newsbox-icon-180.png">
-  <link rel="manifest" href="/site.webmanifest">
+<!-- Favicons / App icons -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/newsbox-icon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/newsbox-icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/newsbox-icon-180.png">
+<link rel="manifest" href="/site.webmanifest">
 
-  <!-- Optional: nicer URL bar color on mobile -->
-  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
+<!-- Optional: nicer URL bar color on mobile -->
+<meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
 
-  <style>
-    :root{
-      --bg: #f3f4f6;
-      --text: #0b0b0f;
-      --muted: rgba(0,0,0,.55);
-      --card: rgba(255,255,255,.72);
-      --border: rgba(0,0,0,.08);
-      --shadow: 0 14px 40px rgba(0,0,0,.10);
-      --radius: 22px;
-      --max: 1440px;
+<style>
+:root{
+--bg: #f3f4f6;
+--text: #0b0b0f;
+--muted: rgba(0,0,0,.55);
+--card: rgba(255,255,255,.72);
+--border: rgba(0,0,0,.08);
+--shadow: 0 14px 40px rgba(0,0,0,.10);
+--radius: 22px;
+--max: 1440px;
 
-      --topbar: rgba(255,255,255,.58);
-      --topbarBorder: rgba(0,0,0,.08);
-      --pill: rgba(255,255,255,.75);
-      --pillBorder: rgba(0,0,0,.10);
-    }
+--topbar: rgba(255,255,255,.58);
+--topbarBorder: rgba(0,0,0,.08);
+--pill: rgba(255,255,255,.75);
+--pillBorder: rgba(0,0,0,.10);
+}
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg: #0b0b0f;
-        --text: rgba(255,255,255,.92);
-        --muted: rgba(255,255,255,.58);
-        --card: rgba(255,255,255,.08);
-        --border: rgba(255,255,255,.14);
-        --shadow: 0 18px 50px rgba(0,0,0,.55);
+@media (prefers-color-scheme: dark){
+:root{
+--bg: #0b0b0f;
+--text: rgba(255,255,255,.92);
+--muted: rgba(255,255,255,.58);
+--card: rgba(255,255,255,.08);
+--border: rgba(255,255,255,.14);
+--shadow: 0 18px 50px rgba(0,0,0,.55);
 
-        --topbar: rgba(15,15,20,.55);
-        --topbarBorder: rgba(255,255,255,.12);
-        --pill: rgba(255,255,255,.10);
-        --pillBorder: rgba(255,255,255,.18);
-      }
-    }
+--topbar: rgba(15,15,20,.55);
+--topbarBorder: rgba(255,255,255,.12);
+--pill: rgba(255,255,255,.10);
+--pillBorder: rgba(255,255,255,.18);
+}
+}
 
-    *{ box-sizing: border-box; }
+*{ box-sizing: border-box; }
 
-    body{
-      margin: 0;
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(0,0,0,.05), transparent 60%),
-        radial-gradient(1000px 600px at 90% 0%, rgba(0,0,0,.03), transparent 55%),
-        var(--bg);
-      color: var(--text);
-      font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+body{
+margin: 0;
+background:
+radial-gradient(1200px 700px at 20% -10%, rgba(0,0,0,.05), transparent 60%),
+radial-gradient(1000px 600px at 90% 0%, rgba(0,0,0,.03), transparent 55%),
+var(--bg);
+color: var(--text);
+font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
 
-    /* Sticky topbar */
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      background: var(--topbar);
-      border-bottom: 1px solid var(--topbarBorder);
-    }
-    .topbarInner{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
+/* Sticky topbar */
+.topbar{
+position: sticky;
+top: 0;
+z-index: 50;
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+background: var(--topbar);
+border-bottom: 1px solid var(--topbarBorder);
+}
+.topbarInner{
+max-width: var(--max);
+margin: 0 auto;
+padding: 14px 18px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 14px;
+}
 
-    /* Brand block now supports logo */
-    .brandTitle{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      text-decoration: none;
-      color: inherit;
-    }
+/* Brand block now supports logo */
+.brandTitle{
+display: flex;
+align-items: center;
+gap: 10px;
+min-width: 0;
+text-decoration: none;
+color: inherit;
+}
 
-    .brandLogo{
-      height: 26px;
-      width: auto;
-      display: block;
-      border-radius: 6px; /* subtle, looks nice */
-    }
+.brandLogo{
+height: 26px;
+width: auto;
+display: block;
+border-radius: 6px; /* subtle, looks nice */
+}
 
-    .brandText{
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
+.brandText{
+display: flex;
+flex-direction: column;
+gap: 2px;
+min-width: 0;
+}
 
-    .brandText .title{
-      font-size: 14px;
-      letter-spacing: -0.02em;
-      font-weight: 850;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.05;
-    }
-    .brandText .subtitle{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.05;
-    }
+.brandText .title{
+font-size: 14px;
+letter-spacing: -0.02em;
+font-weight: 850;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+line-height: 1.05;
+}
+.brandText .subtitle{
+font-size: 12px;
+color: var(--muted);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+line-height: 1.05;
+}
 
-    .topbarRight{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 0 0 auto;
-    }
-    .pill{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: var(--pill);
-      border: 1px solid var(--pillBorder);
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .btn{
-      appearance: none;
-      border: 1px solid var(--pillBorder);
-      background: var(--pill);
-      color: var(--text);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 750;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      transition: transform .08s ease, background .12s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px); }
-    .btn[disabled]{ opacity: .6; cursor: not-allowed; transform: none; }
+.topbarRight{
+display: flex;
+align-items: center;
+gap: 10px;
+flex: 0 0 auto;
+}
+.pill{
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 8px 10px;
+border-radius: 999px;
+background: var(--pill);
+border: 1px solid var(--pillBorder);
+font-size: 12px;
+color: var(--muted);
+white-space: nowrap;
+}
+.btn{
+appearance: none;
+border: 1px solid var(--pillBorder);
+background: var(--pill);
+color: var(--text);
+padding: 8px 10px;
+border-radius: 999px;
+font-size: 12px;
+font-weight: 750;
+letter-spacing: -0.01em;
+cursor: pointer;
+transition: transform .08s ease, background .12s ease;
+}
+.btn:hover{ transform: translateY(-1px); }
+.btn:active{ transform: translateY(0px); }
+.btn[disabled]{ opacity: .6; cursor: not-allowed; transform: none; }
 
-    header{
-      padding: 28px 18px 10px;
-      text-align: center;
-    }
-    header h1{
-      margin: 0;
-      font-size: clamp(26px, 2.3vw, 34px);
-      letter-spacing: -0.03em;
-      font-weight: 900;
-    }
-    header p{
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
+header{
+padding: 28px 18px 10px;
+text-align: center;
+}
+header h1{
+margin: 0;
+font-size: clamp(26px, 2.3vw, 34px);
+letter-spacing: -0.03em;
+font-weight: 900;
+}
+header p{
+margin: 10px 0 0;
+color: var(--muted);
+font-size: 14px;
+}
 
-    .wrap{
-      width: 100%;
-      padding: 10px 18px 64px;
-      margin: 0 auto;
-      max-width: var(--max);
-      display: grid;
-      gap: 16px;
-    }
+.wrap{
+width: 100%;
+padding: 10px 18px 64px;
+margin: 0 auto;
+max-width: var(--max);
+display: grid;
+gap: 16px;
+}
 
-    .section{
-      position: relative;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-    .section::before{
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(900px 280px at var(--glow-x, 20%) 0%,
-                  var(--brandGlow, rgba(0,0,0,.06)), transparent 60%);
-      pointer-events: none;
-    }
+.section{
+position: relative;
+border-radius: var(--radius);
+overflow: hidden;
+background: var(--card);
+border: 1px solid var(--border);
+box-shadow: var(--shadow);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+}
+.section::before{
+content: "";
+position: absolute;
+inset: 0;
+background: radial-gradient(900px 280px at var(--glow-x, 20%) 0%,
+var(--brandGlow, rgba(0,0,0,.06)), transparent 60%);
+pointer-events: none;
+}
 
-    .sectionInner{
-      position: relative;
-      display: flex;
-      gap: 22px;
-      padding: 22px;
-      align-items: stretch;
-    }
-    .section[data-layout="logo-left"] .sectionInner{ flex-direction: row; }
-    .section[data-layout="logo-right"] .sectionInner{ flex-direction: row-reverse; }
+.sectionInner{
+position: relative;
+display: flex;
+gap: 22px;
+padding: 22px;
+align-items: stretch;
+}
+.section[data-layout="logo-left"] .sectionInner{ flex-direction: row; }
+.section[data-layout="logo-right"] .sectionInner{ flex-direction: row-reverse; }
 
-    /* Cover card (replaces logo) */
-    .cover{
-      flex: 0 0 360px;
-      min-height: 200px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      isolation: isolate;
-      background:
-        radial-gradient(900px 240px at 10% 0%, var(--brandGlow, rgba(0,0,0,.10)), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.04));
-      border: 1px solid rgba(0,0,0,.06);
-    }
-    @media (prefers-color-scheme: dark){
-      .cover{ border-color: rgba(255,255,255,.14); }
-    }
+/* Cover card (replaces logo) */
+.cover{
+flex: 0 0 360px;
+min-height: 200px;
+border-radius: 18px;
+overflow: hidden;
+position: relative;
+isolation: isolate;
+background:
+radial-gradient(900px 240px at 10% 0%, var(--brandGlow, rgba(0,0,0,.10)), transparent 60%),
+linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.04));
+border: 1px solid rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+.cover{ border-color: rgba(255,255,255,.14); }
+}
 
-    .coverImg{
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1.02);
-      filter: saturate(1.05) contrast(1.02);
-      opacity: 0; /* fades in when loaded */
-      transition: opacity .25s ease;
-    }
-    .cover.has-image .coverImg{ opacity: 1; }
+.coverImg{
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+transform: scale(1.02);
+filter: saturate(1.05) contrast(1.02);
+opacity: 0; /* fades in when loaded */
+transition: opacity .25s ease;
+}
+.cover.has-image .coverImg{ opacity: 1; }
 
-    /* overlay for readability */
-    .cover::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.10) 65%),
-        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
-      mix-blend-mode: multiply;
-      z-index: 1;
-      pointer-events:none;
-      opacity: .85;
-    }
-    @media (prefers-color-scheme: dark){
-      .cover::after{
-        opacity: .92;
-        background:
-          linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.10) 65%),
-          linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.70));
-      }
-    }
+/* overlay for readability */
+.cover::after{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.10) 65%),
+linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
+mix-blend-mode: multiply;
+z-index: 1;
+pointer-events:none;
+opacity: .85;
+}
+@media (prefers-color-scheme: dark){
+.cover::after{
+opacity: .92;
+background:
+linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.10) 65%),
+linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.70));
+}
+}
 
-    .coverTitle{
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 16px;
-      z-index: 2;
-      font-weight: 950;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      color: rgba(255,255,255,.96);
-      text-shadow: 0 10px 30px rgba(0,0,0,.45);
-      font-size: 34px;
-    }
-    .coverSub{
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 10px;
-      transform: translateY(44px);
-      z-index: 2;
-      color: rgba(255,255,255,.72);
-      font-size: 12px;
-      letter-spacing: -0.01em;
-    }
+.coverTitle{
+position: absolute;
+left: 18px;
+right: 18px;
+bottom: 16px;
+z-index: 2;
+font-weight: 950;
+letter-spacing: -0.03em;
+line-height: 1.05;
+color: rgba(255,255,255,.96);
+text-shadow: 0 10px 30px rgba(0,0,0,.45);
+font-size: 34px;
+}
+.coverSub{
+position: absolute;
+left: 18px;
+right: 18px;
+bottom: 10px;
+transform: translateY(44px);
+z-index: 2;
+color: rgba(255,255,255,.72);
+font-size: 12px;
+letter-spacing: -0.01em;
+}
 
-    .content{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-width: 0;
-    }
+.content{
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 10px;
+min-width: 0;
+}
 
-    .metaRow{
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 2px 2px 6px;
-    }
-    .metaRow h2{
-      margin: 0;
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: -0.015em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .status{
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
+.metaRow{
+display: flex;
+align-items: baseline;
+justify-content: space-between;
+gap: 12px;
+padding: 2px 2px 6px;
+}
+.metaRow h2{
+margin: 0;
+font-size: 16px;
+font-weight: 900;
+letter-spacing: -0.015em;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.status{
+color: var(--muted);
+font-size: 12px;
+white-space: nowrap;
+}
 
-    ul.items{
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 10px;
-    }
+ul.items{
+list-style: none;
+margin: 0;
+padding: 0;
+display: grid;
+gap: 10px;
+}
 
-    .item{
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,.06);
-      background: rgba(255,255,255,.62);
-      transition: transform .10s ease, background .12s ease, border-color .12s ease;
-      min-width: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    @media (prefers-color-scheme: dark){
-      .item{
-        border-color: rgba(255,255,255,.12);
-        background: rgba(255,255,255,.06);
-      }
-      .item:hover{
-        background: rgba(255,255,255,.09);
-        border-color: rgba(255,255,255,.18);
-      }
-    }
+.item{
+display: flex;
+align-items: baseline;
+gap: 14px;
+padding: 12px 14px;
+border-radius: 16px;
+border: 1px solid rgba(0,0,0,.06);
+background: rgba(255,255,255,.62);
+transition: transform .10s ease, background .12s ease, border-color .12s ease;
+min-width: 0;
+position: relative;
+overflow: hidden;
+}
+@media (prefers-color-scheme: dark){
+.item{
+border-color: rgba(255,255,255,.12);
+background: rgba(255,255,255,.06);
+}
+.item:hover{
+background: rgba(255,255,255,.09);
+border-color: rgba(255,255,255,.18);
+}
+}
 
-    .item::before{
-      content:"";
-      position:absolute;
-      left:0; top:0; bottom:0;
-      width: 4px;
-      background: var(--brandLine, rgba(0,0,0,.18));
-      border-radius: 999px;
-    }
+.item::before{
+content:"";
+position:absolute;
+left:0; top:0; bottom:0;
+width: 4px;
+background: var(--brandLine, rgba(0,0,0,.18));
+border-radius: 999px;
+}
 
-    .item:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.82);
-      border-color: rgba(0,0,0,.10);
-    }
+.item:hover{
+transform: translateY(-1px);
+background: rgba(255,255,255,.82);
+border-color: rgba(0,0,0,.10);
+}
 
-    .titleLink{
-      font-size: 16.5px;
-      font-weight: 680;
-      letter-spacing: -0.012em;
-      min-width: 0;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-left: 8px;
-      line-height: 1.25;
-    }
-    .titleLink a{
-      color: inherit;
-      text-decoration: none;
-    }
-    .titleLink a:hover{ text-decoration: underline; }
+.titleLink{
+font-size: 16.5px;
+font-weight: 680;
+letter-spacing: -0.012em;
+min-width: 0;
+flex: 1;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+padding-left: 8px;
+line-height: 1.25;
+}
+.titleLink a{
+color: inherit;
+text-decoration: none;
+}
+.titleLink a:hover{ text-decoration: underline; }
 
     /* ===== Added for BREAKING badge + nicer layout ===== */
     .titleRow{
@@ -417,166 +417,143 @@
     }
     /* ===== end BREAKING ===== */
 
-    .dt{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      flex: 0 0 auto;
-    }
+.dt{
+font-size: 12px;
+color: var(--muted);
+white-space: nowrap;
+flex: 0 0 auto;
+}
 
-    .footerNote{
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 6px 0 0;
-    }
+.footerNote{
+text-align: center;
+color: var(--muted);
+font-size: 12px;
+padding: 6px 0 0;
+}
 
-    @media (prefers-reduced-motion: reduce){
-      .item, .btn, .coverImg{ transition: none; }
-      .item:hover, .btn:hover{ transform: none; }
-    }
+@media (prefers-reduced-motion: reduce){
+.item, .btn, .coverImg{ transition: none; }
+.item:hover, .btn:hover{ transform: none; }
+}
 
-    @media (max-width: 980px){
-      .wrap{ padding: 8px 12px 48px; }
-      .topbarInner{ padding: 12px 12px; }
-      .sectionInner{ flex-direction: column !important; }
-      .cover{ flex: 0 0 auto; min-height: 190px; }
-      .coverTitle{ font-size: 30px; }
-      .titleLink{ white-space: normal; }
-      .item{ align-items: flex-start; }
-      header{ padding-top: 22px; }
-      .brandLogo{ height: 24px; }
-    }
-  </style>
+@media (max-width: 980px){
+.wrap{ padding: 8px 12px 48px; }
+.topbarInner{ padding: 12px 12px; }
+.sectionInner{ flex-direction: column !important; }
+.cover{ flex: 0 0 auto; min-height: 190px; }
+.coverTitle{ font-size: 30px; }
+.titleLink{ white-space: normal; }
+.item{ align-items: flex-start; }
+header{ padding-top: 22px; }
+.brandLogo{ height: 24px; }
+}
+</style>
 </head>
 
 <body>
-  <div class="topbar">
-    <div class="topbarInner">
-      <!-- Brand with logo -->
-      <a class="brandTitle" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
-        <img class="brandLogo" src="/newsbox-logo-1024.png" alt="NewsBox logo">
-        <div class="brandText">
-          <div class="title">NewsBox</div>
-          <div class="subtitle" id="todayLine">—</div>
-        </div>
-      </a>
+<div class="topbar">
+<div class="topbarInner">
+<!-- Brand with logo -->
+<a class="brandTitle" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+<img class="brandLogo" src="/newsbox-logo-1024.png" alt="NewsBox logo">
+<div class="brandText">
+<div class="title">NewsBox</div>
+<div class="subtitle" id="todayLine">—</div>
+</div>
+</a>
 
-      <div class="topbarRight">
-        <div class="pill" id="lastRefresh">Last refresh: —</div>
-        <button class="btn" id="btnRefresh" type="button">Refresh</button>
-      </div>
-    </div>
-  </div>
+<div class="topbarRight">
+<div class="pill" id="lastRefresh">Last refresh: —</div>
+<button class="btn" id="btnRefresh" type="button">Refresh</button>
+</div>
+</div>
+</div>
 
-  <header>
-    <h1>Latest headlines</h1>
-    <p>10 newest per source • title + date/time only</p>
-  </header>
+<header>
+<h1>Latest headlines</h1>
+<p>10 newest per source • title + date/time only</p>
+</header>
 
-  <main class="wrap">
+<main class="wrap">
 
-    <!-- NYTimes -->
-    <section class="section"
-      data-layout="logo-left"
-      style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-nyt">
-          <img class="coverImg" id="coverImg-nyt" alt="NYT cover" />
-          <div class="coverTitle">NYTimes</div>
-          <div class="coverSub" id="coverSub-nyt"></div>
-        </div>
+<!-- NYTimes -->
+<section class="section"
+data-layout="logo-left"
+style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
+<div class="sectionInner">
+<div class="cover" id="cover-nyt">
+<img class="coverImg" id="coverImg-nyt" alt="NYT cover" />
+<div class="coverTitle">NYTimes</div>
+<div class="coverSub" id="coverSub-nyt"></div>
+</div>
 
-        <div class="content">
-          <div class="metaRow">
-            <h2>The New York Times</h2>
-            <div class="status" id="status-nyt">Loading…</div>
-          </div>
-          <ul class="items" id="list-nyt"></ul>
-        </div>
-      </div>
-    </section>
+<div class="content">
+<div class="metaRow">
+<h2>The New York Times</h2>
+<div class="status" id="status-nyt">Loading…</div>
+</div>
+<ul class="items" id="list-nyt"></ul>
+</div>
+</div>
+</section>
 
-    <!-- The Economist -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-economist">
-          <img class="coverImg" id="coverImg-economist" alt="Economist cover" />
-          <div class="coverTitle">The Economist</div>
-          <div class="coverSub" id="coverSub-economist"></div>
-        </div>
+<!-- The Economist -->
+<section class="section"
+data-layout="logo-right"
+style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
+<div class="sectionInner">
+<div class="cover" id="cover-economist">
+<img class="coverImg" id="coverImg-economist" alt="Economist cover" />
+<div class="coverTitle">The Economist</div>
+<div class="coverSub" id="coverSub-economist"></div>
+</div>
 
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Economist</h2>
-            <div class="status" id="status-economist">Loading…</div>
-          </div>
-          <ul class="items" id="list-economist"></ul>
-        </div>
-      </div>
-    </section>
+<div class="content">
+<div class="metaRow">
+<h2>The Economist</h2>
+<div class="status" id="status-economist">Loading…</div>
+</div>
+<ul class="items" id="list-economist"></ul>
+</div>
+</div>
+</section>
 
-    <!-- The Verge (purple) -->
-    <section class="section"
-      data-layout="logo-left"
-      style="--brandGlow: rgba(175, 0, 255, .22); --brandLine: rgba(175, 0, 255, .72); --glow-x: 20%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-verge">
-          <img class="coverImg" id="coverImg-verge" alt="The Verge cover" />
-          <div class="coverTitle">The Verge</div>
-          <div class="coverSub" id="coverSub-verge"></div>
-        </div>
+<!-- The Verge (purple) -->
+<section class="section"
+data-layout="logo-left"
+style="--brandGlow: rgba(175, 0, 255, .22); --brandLine: rgba(175, 0, 255, .72); --glow-x: 20%;">
+<div class="sectionInner">
+<div class="cover" id="cover-verge">
+<img class="coverImg" id="coverImg-verge" alt="The Verge cover" />
+<div class="coverTitle">The Verge</div>
+<div class="coverSub" id="coverSub-verge"></div>
+</div>
 
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Verge</h2>
-            <div class="status" id="status-verge">Loading…</div>
-          </div>
-          <ul class="items" id="list-verge"></ul>
-        </div>
-      </div>
-    </section>
+<div class="content">
+<div class="metaRow">
+<h2>The Verge</h2>
+<div class="status" id="status-verge">Loading…</div>
+</div>
+<ul class="items" id="list-verge"></ul>
+</div>
+</div>
+</section>
 
-        <!-- The Intercept -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(20, 60, 20, .18); --brandLine: rgba(20, 60, 20, .65); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-intercept">
-          <img class="coverImg" id="coverImg-intercept" alt="The Intercept cover" />
-          <div class="coverTitle">The Intercept</div>
-          <div class="coverSub" id="coverSub-intercept"></div>
-        </div>
+<div class="footerNote">
+Using rss2json (free tier has limits). If it flakes, hit refresh later.
+</div>
 
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Intercept</h2>
-            <div class="status" id="status-intercept">Loading…</div>
-          </div>
-          <ul class="items" id="list-intercept"></ul>
-        </div>
-      </div>
-    </section>
+</main>
 
-    <div class="footerNote">
-      Using rss2json (free tier has limits). If it flakes, hit refresh later.
-    </div>
+<script>
+const FEEDS = [
+{ key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
+{ key: "economist", name: "The Economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
+{ key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
+];
 
-  </main>
-
-  <script>
-    const FEEDS = [
-      { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "economist", name: "The Economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
-      { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
-      { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" },
-      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" }
-    ];
-
-    const MAX_ITEMS = 10;
-    const AUTO_REFRESH_MINUTES = 20;
+const MAX_ITEMS = 10;
+const AUTO_REFRESH_MINUTES = 20;
 
     /* ===== Added: freshness sorting + NYT-only BREAKING badge ===== */
     const BREAKING_HOURS = 2;
@@ -603,48 +580,49 @@
     }
     /* ===== end added ===== */
 
-    function formatArticleDate(dateStr) {
-      const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return "";
-      return new Intl.DateTimeFormat(undefined, {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
-      }).format(d);
-    }
+function formatArticleDate(dateStr) {
+const d = new Date(dateStr);
+if (Number.isNaN(d.getTime())) return "";
+return new Intl.DateTimeFormat(undefined, {
+weekday: "short",
+year: "numeric",
+month: "short",
+day: "2-digit",
+hour: "2-digit",
+minute: "2-digit"
+}).format(d);
+}
 
-    function setStatus(key, text) {
-      const el = document.getElementById(`status-${key}`);
-      if (el) el.textContent = text;
-    }
+function setStatus(key, text) {
+const el = document.getElementById(`status-${key}`);
+if (el) el.textContent = text;
+}
 
-    function setItems(key, items) {
-      const ul = document.getElementById(`list-${key}`);
-      if (!ul) return;
+function setItems(key, items) {
+const ul = document.getElementById(`list-${key}`);
+if (!ul) return;
 
-      ul.innerHTML = "";
+ul.innerHTML = "";
 
+      items.slice(0, MAX_ITEMS).forEach(item => {
       const sorted = sortByFreshness(items).slice(0, MAX_ITEMS);
 
       sorted.forEach(item => {
-        const li = document.createElement("li");
-        li.className = "item";
+const li = document.createElement("li");
+li.className = "item";
 
         const titleRow = document.createElement("div");
         titleRow.className = "titleRow";
 
-        const title = document.createElement("div");
-        title.className = "titleLink";
+const title = document.createElement("div");
+title.className = "titleLink";
 
-        const a = document.createElement("a");
-        a.href = item.link || "#";
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = (item.title || "").trim() || "Untitled";
-        title.appendChild(a);
+const a = document.createElement("a");
+a.href = item.link || "#";
+a.target = "_blank";
+a.rel = "noopener noreferrer";
+a.textContent = (item.title || "").trim() || "Untitled";
+title.appendChild(a);
 
         titleRow.appendChild(title);
 
@@ -656,130 +634,136 @@
           titleRow.appendChild(badge);
         }
 
-        const dt = document.createElement("div");
-        dt.className = "dt";
+const dt = document.createElement("div");
+dt.className = "dt";
+        dt.textContent = formatArticleDate(item.pubDate || item.published || item.date || "");
         const d = getItemDate(item);
         dt.textContent = d ? formatArticleDate(d.toISOString()) : "";
 
+        li.appendChild(title);
         li.appendChild(titleRow);
-        li.appendChild(dt);
-        ul.appendChild(li);
-      });
-    }
+li.appendChild(dt);
+ul.appendChild(li);
+});
+}
 
-    function extractImageFromDescription(html) {
-      if (!html || typeof html !== "string") return "";
-      const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-      return m ? m[1] : "";
-    }
+function extractImageFromDescription(html) {
+if (!html || typeof html !== "string") return "";
+const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+return m ? m[1] : "";
+}
 
-    function extractImage(item) {
-      if (item?.enclosure?.link) return item.enclosure.link;
-      if (typeof item?.thumbnail === "string" && item.thumbnail) return item.thumbnail;
-      if (typeof item?.enclosure === "string") return item.enclosure;
-      const fromDesc = extractImageFromDescription(item?.description);
-      if (fromDesc) return fromDesc;
-      const fromContent = extractImageFromDescription(item?.content);
-      if (fromContent) return fromContent;
-      return "";
-    }
+function extractImage(item) {
+if (item?.enclosure?.link) return item.enclosure.link;
+if (typeof item?.thumbnail === "string" && item.thumbnail) return item.thumbnail;
+if (typeof item?.enclosure === "string") return item.enclosure;
+const fromDesc = extractImageFromDescription(item?.description);
+if (fromDesc) return fromDesc;
+const fromContent = extractImageFromDescription(item?.content);
+if (fromContent) return fromContent;
+return "";
+}
 
-    function setCover(key, newestItem) {
-      const cover = document.getElementById(`cover-${key}`);
-      const img = document.getElementById(`coverImg-${key}`);
-      const sub = document.getElementById(`coverSub-${key}`);
+function setCover(key, newestItem) {
+const cover = document.getElementById(`cover-${key}`);
+const img = document.getElementById(`coverImg-${key}`);
+const sub = document.getElementById(`coverSub-${key}`);
 
-      if (!cover || !img) return;
+if (!cover || !img) return;
 
-      const imgUrl = newestItem ? extractImage(newestItem) : "";
-      const dateTxt = newestItem ? formatArticleDate(newestItem.pubDate || newestItem.published || newestItem.date || "") : "";
+const imgUrl = newestItem ? extractImage(newestItem) : "";
+const dateTxt = newestItem ? formatArticleDate(newestItem.pubDate || newestItem.published || newestItem.date || "") : "";
 
-      if (sub) sub.textContent = dateTxt ? `Latest: ${dateTxt}` : "";
+if (sub) sub.textContent = dateTxt ? `Latest: ${dateTxt}` : "";
 
-      if (!imgUrl) {
-        cover.classList.remove("has-image");
-        img.removeAttribute("src");
-        return;
-      }
+if (!imgUrl) {
+cover.classList.remove("has-image");
+img.removeAttribute("src");
+return;
+}
 
-      img.onload = () => cover.classList.add("has-image");
-      img.onerror = () => {
-        cover.classList.remove("has-image");
-        img.removeAttribute("src");
-      };
+img.onload = () => cover.classList.add("has-image");
+img.onerror = () => {
+cover.classList.remove("has-image");
+img.removeAttribute("src");
+};
 
-      img.src = imgUrl;
-    }
+img.src = imgUrl;
+}
 
-    async function fetchViaRss2Json(rssUrl) {
-      const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
-      const res = await fetch(endpoint, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (data.status !== "ok") throw new Error(data.message || "rss2json error");
-      return data.items || [];
-    }
+async function fetchViaRss2Json(rssUrl) {
+const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
+const res = await fetch(endpoint, { cache: "no-store" });
+if (!res.ok) throw new Error(`HTTP ${res.status}`);
+const data = await res.json();
+if (data.status !== "ok") throw new Error(data.message || "rss2json error");
+return data.items || [];
+}
 
-    function setLastRefresh() {
-      const el = document.getElementById("lastRefresh");
-      if (!el) return;
-      const now = new Date();
-      const txt = new Intl.DateTimeFormat(undefined, { weekday:"short", hour:"2-digit", minute:"2-digit" }).format(now);
-      el.textContent = `Last refresh: ${txt}`;
-    }
+function setLastRefresh() {
+const el = document.getElementById("lastRefresh");
+if (!el) return;
+const now = new Date();
+const txt = new Intl.DateTimeFormat(undefined, { weekday:"short", hour:"2-digit", minute:"2-digit" }).format(now);
+el.textContent = `Last refresh: ${txt}`;
+}
 
-    function setTodayLine() {
-      const el = document.getElementById("todayLine");
-      if (!el) return;
-      const now = new Date();
-      el.textContent = new Intl.DateTimeFormat(undefined, {
-        weekday:"long", year:"numeric", month:"long", day:"numeric"
-      }).format(now);
-    }
+function setTodayLine() {
+const el = document.getElementById("todayLine");
+if (!el) return;
+const now = new Date();
+el.textContent = new Intl.DateTimeFormat(undefined, {
+weekday:"long", year:"numeric", month:"long", day:"numeric"
+}).format(now);
+}
 
-    async function loadFeed(feed) {
-      try {
-        setStatus(feed.key, "Updating…");
-        const items = await fetchViaRss2Json(feed.rssUrl);
+async function loadFeed(feed) {
+try {
+setStatus(feed.key, "Updating…");
+const items = await fetchViaRss2Json(feed.rssUrl);
+        setItems(feed.key, items);
+        setCover(feed.key, items?.[0] || null);
 
         // sort once, use everywhere
         const sorted = sortByFreshness(items);
 
         setItems(feed.key, sorted);
         setCover(feed.key, sorted?.[0] || null);
-        setStatus(feed.key, "Updated");
-      } catch (err) {
-        console.error(feed.key, err);
-        setStatus(feed.key, "Couldn’t load");
-        setItems(feed.key, []);
-        setCover(feed.key, null);
-      }
-    }
+setStatus(feed.key, "Updated");
+} catch (err) {
+console.error(feed.key, err);
+setStatus(feed.key, "Couldn’t load");
+setItems(feed.key, []);
+setCover(feed.key, null);
+}
+}
 
-    async function refreshAll() {
-      const btn = document.getElementById("btnRefresh");
-      btn?.setAttribute("disabled", "true");
+async function refreshAll() {
+const btn = document.getElementById("btnRefresh");
+btn?.setAttribute("disabled", "true");
 
-      for (const f of FEEDS) {
-        await loadFeed(f);
-      }
+for (const f of FEEDS) {
+await loadFeed(f);
+}
 
-      setLastRefresh();
-      btn?.removeAttribute("disabled");
-    }
+setLastRefresh();
+btn?.removeAttribute("disabled");
+}
 
-    // Init
-    setTodayLine();
-    refreshAll();
-    setInterval(refreshAll, AUTO_REFRESH_MINUTES * 60 * 1000);
-    document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
+// Init
+setTodayLine();
+refreshAll();
+setInterval(refreshAll, AUTO_REFRESH_MINUTES * 60 * 1000);
+document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
 
+    // Create a tiny webmanifest on the fly (optional fallback if you don't add a real file)
+    // If you DO add /site.webmanifest, you can remove this block.
     // (Optional leftover from earlier — safe to keep)
-    (function ensureManifest(){
-      const existing = document.querySelector('link[rel="manifest"]');
-      if (!existing) return;
-    })();
-  </script>
+(function ensureManifest(){
+const existing = document.querySelector('link[rel="manifest"]');
+if (!existing) return;
+      // If you add a real /site.webmanifest file, this does nothing.
+})();
+</script>
 </body>
 </html>
-
