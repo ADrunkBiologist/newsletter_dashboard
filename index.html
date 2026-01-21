@@ -1,540 +1,239 @@
+<!-- VERVANG JE HUIDIGE index.html VOLLEDIG DOOR DEZE -->
+
 <!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reading Dashboard</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reading Dashboard</title>
 
-  <style>
-    :root{
-      --bg: #f3f4f6;
-      --text: #0b0b0f;
-      --muted: rgba(0,0,0,.58);
-      --card: rgba(255,255,255,.72);
-      --border: rgba(0,0,0,.08);
-      --shadow: 0 14px 40px rgba(0,0,0,.10);
-      --radius: 22px;
-      --max: 1400px;
+<style>
+:root{
+  --bg:#f3f4f6;
+  --text:#0b0b0f;
+  --muted:rgba(0,0,0,.55);
+  --card:rgba(255,255,255,.72);
+  --border:rgba(0,0,0,.08);
+  --shadow:0 14px 40px rgba(0,0,0,.10);
+  --radius:22px;
+  --max:1400px;
+  --topbar:rgba(255,255,255,.58);
+  --topbarBorder:rgba(0,0,0,.08);
+}
 
-      --topbar: rgba(255,255,255,.58);
-      --topbarBorder: rgba(0,0,0,.08);
-      --pill: rgba(255,255,255,.75);
-      --pillBorder: rgba(0,0,0,.10);
-    }
+@media (prefers-color-scheme: dark){
+:root{
+  --bg:#0b0b0f;
+  --text:rgba(255,255,255,.92);
+  --muted:rgba(255,255,255,.58);
+  --card:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.14);
+  --shadow:0 18px 50px rgba(0,0,0,.55);
+  --topbar:rgba(15,15,20,.55);
+  --topbarBorder:rgba(255,255,255,.12);
+}
+}
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg: #0b0b0f;
-        --text: rgba(255,255,255,.92);
-        --muted: rgba(255,255,255,.58);
-        --card: rgba(255,255,255,.08);
-        --border: rgba(255,255,255,.14);
-        --shadow: 0 18px 50px rgba(0,0,0,.55);
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
 
-        --topbar: rgba(15,15,20,.55);
-        --topbarBorder: rgba(255,255,255,.12);
-        --pill: rgba(255,255,255,.10);
-        --pillBorder: rgba(255,255,255,.18);
-      }
-    }
+.topbar{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:blur(18px);
+  background:var(--topbar);
+  border-bottom:1px solid var(--topbarBorder);
+}
+.topbarInner{
+  max-width:var(--max);
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+}
 
-    *{ box-sizing: border-box; }
-    body{
-      margin: 0;
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(0,0,0,.05), transparent 60%),
-        radial-gradient(1000px 600px at 90% 0%, rgba(0,0,0,.03), transparent 55%),
-        var(--bg);
-      color: var(--text);
-      font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+.wrap{
+  max-width:var(--max);
+  margin:auto;
+  padding:18px;
+  display:grid;
+  gap:16px;
+}
 
-    /* Sticky Apple-ish top bar */
-    .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      background: var(--topbar);
-      border-bottom: 1px solid var(--topbarBorder);
-    }
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
 
-    .topbarInner{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
+.sectionInner{
+  display:flex;
+  gap:24px;
+  padding:22px;
+}
 
-    .brandTitle{
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
+.section[data-layout="logo-right"] .sectionInner{flex-direction:row-reverse}
 
-    .brandTitle .title{
-      font-size: 14px;
-      letter-spacing: -0.02em;
-      font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.brand{
+  flex:0 0 320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .brandTitle .subtitle{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.brand img{
+  max-width:280px;
+  max-height:120px;
+  object-fit:contain;
+}
 
-    .topbarRight{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 0 0 auto;
-    }
+/* Verge logo: dark/light aware */
+.verge-logo{
+  filter:none;
+}
+@media (prefers-color-scheme: dark){
+  .verge-logo{filter:invert(1)}
+}
 
-    .pill{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: var(--pill);
-      border: 1px solid var(--pillBorder);
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
+.content{flex:1; min-width:0}
 
-    .btn{
-      appearance: none;
-      border: 1px solid var(--pillBorder);
-      background: var(--pill);
-      color: var(--text);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      transition: transform .08s ease, background .12s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px); }
+.metaRow{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+.metaRow h2{
+  font-size:17px;
+  font-weight:800;
+}
 
-    /* Layout */
-    header{
-      padding: 34px 20px 12px;
-      text-align: center;
-    }
-    header h1{
-      margin: 0;
-      font-size: clamp(26px, 2.3vw, 34px);
-      letter-spacing: -0.03em;
-      font-weight: 850;
-    }
-    header p{
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
+ul.items{list-style:none; padding:0; margin:0; display:grid; gap:8px}
 
-    .wrap{
-      width: 100%;
-      padding: 10px 18px 64px;
-      margin: 0 auto;
-      max-width: var(--max);
-      display: grid;
-      gap: 16px;
-    }
+.item{
+  display:flex;
+  gap:14px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.65);
+}
+@media (prefers-color-scheme: dark){
+  .item{background:rgba(255,255,255,.06)}
+}
 
-    .section{
-      position: relative;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
+.titleLink{
+  font-size:16.5px;          /* 👈 groter */
+  font-weight:650;
+  flex:1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.titleLink a{
+  color:inherit;
+  text-decoration:none;
+}
+.titleLink a:hover{text-decoration:underline}
 
-    .section::before{
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(900px 280px at var(--glow-x, 20%) 0%,
-                  var(--brandGlow, rgba(0,0,0,.06)), transparent 60%);
-      pointer-events: none;
-    }
+.dt{
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+}
 
-    .sectionInner{
-      position: relative;
-      display: flex;
-      gap: 18px;
-      padding: 18px;
-      align-items: stretch;
-    }
-
-    .section[data-layout="logo-left"] .sectionInner{ flex-direction: row; }
-    .section[data-layout="logo-right"] .sectionInner{ flex-direction: row-reverse; }
-
-    .brand{
-      flex: 0 0 280px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 18px;
-      border: 1px solid rgba(0,0,0,.07);
-      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
-      padding: 18px;
-      min-height: 190px;
-    }
-    @media (prefers-color-scheme: dark){
-      .brand{
-        border-color: rgba(255,255,255,.14);
-        background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      }
-    }
-
-    .brand img{
-      max-width: 240px;
-      max-height: 92px;
-      object-fit: contain;
-      filter: saturate(1.05);
-      opacity: .98;
-    }
-
-    .content{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .metaRow{
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 2px 2px 6px;
-    }
-    .metaRow h2{
-      margin: 0;
-      font-size: 16px;
-      font-weight: 850;
-      letter-spacing: -0.015em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .status{
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    ul.items{
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 8px;
-    }
-
-    .item{
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      padding: 11px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,.06);
-      background: rgba(255,255,255,.62);
-      transition: transform .10s ease, background .12s ease, border-color .12s ease;
-      min-width: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    @media (prefers-color-scheme: dark){
-      .item{
-        border-color: rgba(255,255,255,.12);
-        background: rgba(255,255,255,.06);
-      }
-      .item:hover{
-        background: rgba(255,255,255,.09);
-        border-color: rgba(255,255,255,.18);
-      }
-    }
-
-    .item::before{
-      content:"";
-      position:absolute;
-      left:0; top:0; bottom:0;
-      width: 4px;
-      background: var(--brandLine, rgba(0,0,0,.12));
-      border-radius: 999px;
-    }
-
-    .item:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.82);
-      border-color: rgba(0,0,0,.10);
-    }
-
-    .titleLink{
-      font-size: 14px;
-      font-weight: 650;
-      letter-spacing: -0.01em;
-      min-width: 0;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-left: 6px;
-    }
-    .titleLink a{
-      color: inherit;
-      text-decoration: none;
-    }
-    .titleLink a:hover{ text-decoration: underline; }
-
-    .dt{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      flex: 0 0 auto;
-    }
-
-    .footerNote{
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 8px 0 0;
-    }
-
-    @media (max-width: 860px){
-      .wrap{ padding: 8px 12px 48px; }
-      .topbarInner{ padding: 12px 12px; }
-      .sectionInner{ flex-direction: column !important; }
-      .brand{ flex: 0 0 auto; min-height: 120px; }
-      .brand img{ max-width: 260px; max-height: 84px; }
-      .titleLink{ white-space: normal; }
-      .item{ align-items: flex-start; }
-      header{ padding-top: 26px; }
-    }
-  </style>
+@media(max-width:900px){
+  .sectionInner{flex-direction:column!important}
+  .brand{flex:0 0 auto}
+  .brand img{max-width:300px}
+  .titleLink{white-space:normal}
+}
+</style>
 </head>
 
 <body>
-  <div class="topbar">
-    <div class="topbarInner">
-      <div class="brandTitle">
-        <div class="title">Reading Dashboard</div>
-        <div class="subtitle" id="todayLine">—</div>
-      </div>
 
-      <div class="topbarRight">
-        <div class="pill" id="lastRefresh">Last refresh: —</div>
-        <button class="btn" id="btnRefresh" type="button">Refresh</button>
-      </div>
+<div class="topbar">
+  <div class="topbarInner">
+    <strong>Reading Dashboard</strong>
+    <span id="lastRefresh">—</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- NYT -->
+<section class="section" data-layout="logo-left">
+  <div class="sectionInner">
+    <div class="brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg">
+    </div>
+    <div class="content">
+      <div class="metaRow"><h2>The New York Times</h2><span id="status-nyt"></span></div>
+      <ul class="items" id="list-nyt"></ul>
     </div>
   </div>
+</section>
 
-  <header>
-    <h1>Latest headlines</h1>
-    <p>10 newest per source • title + date/time only</p>
-  </header>
-
-  <main class="wrap">
-
-    <!-- NYTimes -->
-    <section class="section"
-      data-layout="logo-left"
-      style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
-      <div class="sectionInner">
-        <div class="brand" aria-label="NYTimes logo">
-          <img alt="The New York Times"
-               src="https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg">
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The New York Times</h2>
-            <div class="status" id="status-nyt">Loading…</div>
-          </div>
-          <ul class="items" id="list-nyt"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- The Economist -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .60); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="brand" aria-label="The Economist logo">
-          <img alt="The Economist"
-               src="https://upload.wikimedia.org/wikipedia/commons/6/65/The_Economist_Logo.svg">
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Economist</h2>
-            <div class="status" id="status-economist">Loading…</div>
-          </div>
-          <ul class="items" id="list-economist"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- The Verge -->
-    <section class="section"
-      data-layout="logo-left"
-      style="--brandGlow: rgba(0, 180, 120, .18); --brandLine: rgba(0, 180, 120, .66); --glow-x: 20%;">
-      <div class="sectionInner">
-        <div class="brand" aria-label="The Verge logo">
-          <img alt="The Verge"
-               src="https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Verge_Logo.svg">
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Verge</h2>
-            <div class="status" id="status-verge">Loading…</div>
-          </div>
-          <ul class="items" id="list-verge"></ul>
-        </div>
-      </div>
-    </section>
-
-    <div class="footerNote">
-      Using rss2json (free tier has limits). If it flakes, try refresh later.
+<!-- Economist -->
+<section class="section" data-layout="logo-right">
+  <div class="sectionInner">
+    <div class="brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/The_Economist_Logo.svg">
     </div>
+    <div class="content">
+      <div class="metaRow"><h2>The Economist</h2><span id="status-economist"></span></div>
+      <ul class="items" id="list-economist"></ul>
+    </div>
+  </div>
+</section>
 
-  </main>
+<!-- Verge -->
+<section class="section" data-layout="logo-left">
+  <div class="sectionInner">
+    <div class="brand">
+      <!-- ZWARTE Verge SVG -->
+      <img class="verge-logo"
+           src="https://upload.wikimedia.org/wikipedia/commons/3/38/The_Verge_logo_black.svg">
+    </div>
+    <div class="content">
+      <div class="metaRow"><h2>The Verge</h2><span id="status-verge"></span></div>
+      <ul class="items" id="list-verge"></ul>
+    </div>
+  </div>
+</section>
 
-  <script>
-    const FEEDS = [
-      { key: "nyt", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
-      { key: "verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
-    ];
+</main>
 
-    const MAX_ITEMS = 10;
+<script>
+const FEEDS=[
+ {key:"nyt",rssUrl:"https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"},
+ {key:"economist",rssUrl:"https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml"},
+ {key:"verge",rssUrl:"https://www.theverge.com/rss/index.xml"}
+];
+const MAX_ITEMS=10;
 
-    function formatDateTime(dateStr) {
-      const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return "";
-      return new Intl.DateTimeFormat(undefined, {
-        weekday:"short",
-        year:"numeric",
-        month:"short",
-        day:"2-digit",
-        hour:"2-digit",
-        minute:"2-digit"
-      }).format(d);
-    }
+function fmt(d){return new Intl.DateTimeFormat(undefined,{weekday:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(d))}
+async function load(f){
+ const r=await fetch("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(f.rssUrl));
+ const j=await r.json();
+ const ul=document.getElementById("list-"+f.key);
+ ul.innerHTML="";
+ j.items.slice(0,MAX_ITEMS).forEach(i=>{
+  ul.insertAdjacentHTML("beforeend",
+   `<li class="item">
+     <div class="titleLink"><a target="_blank" href="${i.link}">${i.title}</a></div>
+     <div class="dt">${fmt(i.pubDate)}</div>
+    </li>`);
+ });
+ document.getElementById("status-"+f.key).textContent="Updated";
+}
+FEEDS.forEach(load);
+document.getElementById("lastRefresh").textContent="Updated "+fmt(new Date());
+</script>
 
-    function setStatus(key, text) {
-      const el = document.getElementById(`status-${key}`);
-      if (el) el.textContent = text;
-    }
-
-    function setItems(key, items) {
-      const ul = document.getElementById(`list-${key}`);
-      if (!ul) return;
-
-      ul.innerHTML = "";
-
-      items.slice(0, MAX_ITEMS).forEach(item => {
-        const li = document.createElement("li");
-        li.className = "item";
-
-        const title = document.createElement("div");
-        title.className = "titleLink";
-
-        const a = document.createElement("a");
-        a.href = item.link || "#";
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = (item.title || "").trim() || "Untitled";
-        title.appendChild(a);
-
-        const dt = document.createElement("div");
-        dt.className = "dt";
-        dt.textContent = formatDateTime(item.pubDate || item.published || item.date || "");
-
-        li.appendChild(title);
-        li.appendChild(dt);
-        ul.appendChild(li);
-      });
-    }
-
-    async function fetchViaRss2Json(rssUrl) {
-      const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
-      const res = await fetch(endpoint, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      if (data.status !== "ok") throw new Error(data.message || "rss2json error");
-      return data.items || [];
-    }
-
-    function setLastRefresh() {
-      const el = document.getElementById("lastRefresh");
-      if (!el) return;
-      const now = new Date();
-      const txt = new Intl.DateTimeFormat(undefined, {
-        weekday:"short", hour:"2-digit", minute:"2-digit"
-      }).format(now);
-      el.textContent = `Last refresh: ${txt}`;
-    }
-
-    function setTodayLine() {
-      const el = document.getElementById("todayLine");
-      if (!el) return;
-      const now = new Date();
-      el.textContent = new Intl.DateTimeFormat(undefined, {
-        weekday:"long", year:"numeric", month:"long", day:"numeric"
-      }).format(now);
-    }
-
-    async function loadFeed(feed) {
-      try {
-        setStatus(feed.key, "Updating…");
-        const items = await fetchViaRss2Json(feed.rssUrl);
-        setItems(feed.key, items);
-        setStatus(feed.key, "Updated");
-      } catch (err) {
-        console.error(feed.key, err);
-        setStatus(feed.key, "Couldn’t load");
-        setItems(feed.key, []);
-      }
-    }
-
-    async function refreshAll() {
-      document.getElementById("btnRefresh")?.setAttribute("disabled", "true");
-      for (const f of FEEDS) await loadFeed(f);
-      setLastRefresh();
-      document.getElementById("btnRefresh")?.removeAttribute("disabled");
-    }
-
-    // Init
-    setTodayLine();
-    refreshAll();
-
-    // Button
-    document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
-  </script>
 </body>
 </html>
