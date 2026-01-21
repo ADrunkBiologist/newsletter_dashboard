@@ -539,6 +539,27 @@
       </div>
     </section>
 
+        <!-- The Intercept -->
+    <section class="section"
+      data-layout="logo-right"
+      style="--brandGlow: rgba(20, 60, 20, .18); --brandLine: rgba(20, 60, 20, .65); --glow-x: 82%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-intercept">
+          <img class="coverImg" id="coverImg-intercept" alt="The Intercept cover" />
+          <div class="coverTitle">The Intercept</div>
+          <div class="coverSub" id="coverSub-intercept"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>The Intercept</h2>
+            <div class="status" id="status-intercept">Loading…</div>
+          </div>
+          <ul class="items" id="list-intercept"></ul>
+        </div>
+      </div>
+    </section>
+
     <div class="footerNote">
       Using rss2json (free tier has limits). If it flakes, hit refresh later.
     </div>
@@ -550,6 +571,8 @@
       { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
       { key: "economist", name: "The Economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
       { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
+      { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" },
+      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" }
     ];
 
     const MAX_ITEMS = 10;
