@@ -386,6 +386,37 @@
     }
     .titleLink a:hover{ text-decoration: underline; }
 
+    /* ===== Added for BREAKING badge + nicer layout ===== */
+    .titleRow{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+    .badgeBreaking{
+      display: inline-flex;
+      align-items: center;
+      height: 18px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: -0.01em;
+      background: rgba(255, 59, 48, .12);
+      color: rgba(255, 59, 48, .95);
+      border: 1px solid rgba(255, 59, 48, .25);
+      flex: 0 0 auto;
+    }
+    @media (prefers-color-scheme: dark){
+      .badgeBreaking{
+        background: rgba(255, 59, 48, .18);
+        border-color: rgba(255, 59, 48, .35);
+        color: rgba(255, 120, 110, .95);
+      }
+    }
+    /* ===== end BREAKING ===== */
+
     .dt{
       font-size: 12px;
       color: var(--muted);
@@ -524,6 +555,31 @@
     const MAX_ITEMS = 10;
     const AUTO_REFRESH_MINUTES = 20;
 
+    /* ===== Added: freshness sorting + NYT-only BREAKING badge ===== */
+    const BREAKING_HOURS = 2;
+
+    function getItemDate(item) {
+      const raw = item?.pubDate || item?.published || item?.date || "";
+      const d = new Date(raw);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function sortByFreshness(items) {
+      return [...items].sort((a, b) => {
+        const da = getItemDate(a)?.getTime() ?? 0;
+        const db = getItemDate(b)?.getTime() ?? 0;
+        return db - da; // newest first
+      });
+    }
+
+    function isBreakingNYT(item) {
+      const d = getItemDate(item);
+      if (!d) return false;
+      const ageMs = Date.now() - d.getTime();
+      return ageMs >= 0 && ageMs <= BREAKING_HOURS * 60 * 60 * 1000;
+    }
+    /* ===== end added ===== */
+
     function formatArticleDate(dateStr) {
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return "";
@@ -548,9 +604,14 @@
 
       ul.innerHTML = "";
 
-      items.slice(0, MAX_ITEMS).forEach(item => {
+      const sorted = sortByFreshness(items).slice(0, MAX_ITEMS);
+
+      sorted.forEach(item => {
         const li = document.createElement("li");
         li.className = "item";
+
+        const titleRow = document.createElement("div");
+        titleRow.className = "titleRow";
 
         const title = document.createElement("div");
         title.className = "titleLink";
@@ -562,11 +623,22 @@
         a.textContent = (item.title || "").trim() || "Untitled";
         title.appendChild(a);
 
+        titleRow.appendChild(title);
+
+        // NYT-only BREAKING badge
+        if (key === "nyt" && isBreakingNYT(item)) {
+          const badge = document.createElement("span");
+          badge.className = "badgeBreaking";
+          badge.textContent = "BREAKING";
+          titleRow.appendChild(badge);
+        }
+
         const dt = document.createElement("div");
         dt.className = "dt";
-        dt.textContent = formatArticleDate(item.pubDate || item.published || item.date || "");
+        const d = getItemDate(item);
+        dt.textContent = d ? formatArticleDate(d.toISOString()) : "";
 
-        li.appendChild(title);
+        li.appendChild(titleRow);
         li.appendChild(dt);
         ul.appendChild(li);
       });
@@ -646,8 +718,12 @@
       try {
         setStatus(feed.key, "Updating…");
         const items = await fetchViaRss2Json(feed.rssUrl);
-        setItems(feed.key, items);
-        setCover(feed.key, items?.[0] || null);
+
+        // sort once, use everywhere
+        const sorted = sortByFreshness(items);
+
+        setItems(feed.key, sorted);
+        setCover(feed.key, sorted?.[0] || null);
         setStatus(feed.key, "Updated");
       } catch (err) {
         console.error(feed.key, err);
@@ -675,13 +751,12 @@
     setInterval(refreshAll, AUTO_REFRESH_MINUTES * 60 * 1000);
     document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
 
-    // Create a tiny webmanifest on the fly (optional fallback if you don't add a real file)
-    // If you DO add /site.webmanifest, you can remove this block.
+    // (Optional leftover from earlier — safe to keep)
     (function ensureManifest(){
       const existing = document.querySelector('link[rel="manifest"]');
       if (!existing) return;
-      // If you add a real /site.webmanifest file, this does nothing.
     })();
   </script>
 </body>
 </html>
+
