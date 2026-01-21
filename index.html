@@ -390,9 +390,14 @@
     .titleRow{
       display: flex;
       align-items: center;
-      gap: 8px;
       min-width: 0;
       flex: 1;
+    }
+    .metaInline{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
     }
     .badgeBreaking{
       display: inline-flex;
@@ -443,7 +448,19 @@
       .cover{ flex: 0 0 auto; min-height: 190px; }
       .coverTitle{ font-size: 30px; }
       .titleLink{ white-space: normal; }
-      .item{ align-items: flex-start; }
+      .item{
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .metaInline{
+        order: 1;
+        align-self: flex-end;
+      }
+      .titleRow{
+        order: 2;
+        width: 100%;
+      }
       header{ padding-top: 22px; }
       .brandLogo{ height: 24px; }
     }
@@ -646,22 +663,25 @@
         title.appendChild(a);
 
         titleRow.appendChild(title);
+        const metaInline = document.createElement("div");
+        metaInline.className = "metaInline";
 
         // NYT-only BREAKING badge
         if (key === "nyt" && isBreakingNYT(item)) {
           const badge = document.createElement("span");
           badge.className = "badgeBreaking";
           badge.textContent = "BREAKING";
-          titleRow.appendChild(badge);
+          metaInline.appendChild(badge);
         }
 
         const dt = document.createElement("div");
         dt.className = "dt";
         const d = getItemDate(item);
         dt.textContent = d ? formatArticleDate(d.toISOString()) : "";
+        metaInline.appendChild(dt);
 
         li.appendChild(titleRow);
-        li.appendChild(dt);
+        li.appendChild(metaInline);
         ul.appendChild(li);
       });
     }
