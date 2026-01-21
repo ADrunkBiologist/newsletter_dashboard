@@ -5,38 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reading Dashboard</title>
 
-  <!-- Apple-ish style -->
   <style>
     :root{
-      --bg: #f5f5f7;
-      --card: rgba(255,255,255,.78);
-      --cardBorder: rgba(0,0,0,.08);
-      --text: #111;
-      --muted: rgba(0,0,0,.55);
-      --shadow: 0 10px 30px rgba(0,0,0,.08);
-      --radius: 20px;
-      --max: 980px;
+      --bg: #f3f4f6;
+      --text: #0b0b0f;
+      --muted: rgba(0,0,0,.58);
+      --card: rgba(255,255,255,.72);
+      --border: rgba(0,0,0,.08);
+      --shadow: 0 14px 40px rgba(0,0,0,.10);
+      --radius: 22px;
+      --max: 1400px;
+
+      --topbar: rgba(255,255,255,.58);
+      --topbarBorder: rgba(0,0,0,.08);
+      --pill: rgba(255,255,255,.75);
+      --pillBorder: rgba(0,0,0,.10);
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: #0b0b0f;
+        --text: rgba(255,255,255,.92);
+        --muted: rgba(255,255,255,.58);
+        --card: rgba(255,255,255,.08);
+        --border: rgba(255,255,255,.14);
+        --shadow: 0 18px 50px rgba(0,0,0,.55);
+
+        --topbar: rgba(15,15,20,.55);
+        --topbarBorder: rgba(255,255,255,.12);
+        --pill: rgba(255,255,255,.10);
+        --pillBorder: rgba(255,255,255,.18);
+      }
     }
 
     *{ box-sizing: border-box; }
     body{
       margin: 0;
-      background: var(--bg);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(0,0,0,.05), transparent 60%),
+        radial-gradient(1000px 600px at 90% 0%, rgba(0,0,0,.03), transparent 55%),
+        var(--bg);
       color: var(--text);
       font-family: ui-sans-serif, -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Sticky Apple-ish top bar */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: var(--topbar);
+      border-bottom: 1px solid var(--topbarBorder);
+    }
+
+    .topbarInner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brandTitle{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .brandTitle .title{
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brandTitle .subtitle{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .topbarRight{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--pill);
+      border: 1px solid var(--pillBorder);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .btn{
+      appearance: none;
+      border: 1px solid var(--pillBorder);
+      background: var(--pill);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: transform .08s ease, background .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+
+    /* Layout */
     header{
-      padding: 40px 18px 14px;
+      padding: 34px 20px 12px;
       text-align: center;
     }
     header h1{
       margin: 0;
-      font-size: 28px;
-      letter-spacing: -0.02em;
-      font-weight: 700;
+      font-size: clamp(26px, 2.3vw, 34px);
+      letter-spacing: -0.03em;
+      font-weight: 850;
     }
     header p{
       margin: 10px 0 0;
@@ -45,24 +150,36 @@
     }
 
     .wrap{
-      max-width: var(--max);
+      width: 100%;
+      padding: 10px 18px 64px;
       margin: 0 auto;
-      padding: 18px 18px 60px;
+      max-width: var(--max);
       display: grid;
       gap: 16px;
     }
 
     .section{
-      background: var(--card);
-      border: 1px solid var(--cardBorder);
+      position: relative;
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .section::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 280px at var(--glow-x, 20%) 0%,
+                  var(--brandGlow, rgba(0,0,0,.06)), transparent 60%);
+      pointer-events: none;
     }
 
     .sectionInner{
+      position: relative;
       display: flex;
       gap: 18px;
       padding: 18px;
@@ -73,23 +190,29 @@
     .section[data-layout="logo-right"] .sectionInner{ flex-direction: row-reverse; }
 
     .brand{
-      flex: 0 0 210px;
+      flex: 0 0 280px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,.06);
-      background: rgba(255,255,255,.55);
-      padding: 14px;
-      min-height: 160px;
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,.07);
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
+      padding: 18px;
+      min-height: 190px;
+    }
+    @media (prefers-color-scheme: dark){
+      .brand{
+        border-color: rgba(255,255,255,.14);
+        background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      }
     }
 
     .brand img{
-      max-width: 150px;
-      max-height: 46px;
+      max-width: 240px;
+      max-height: 92px;
       object-fit: contain;
-      filter: grayscale(100%);
-      opacity: .92;
+      filter: saturate(1.05);
+      opacity: .98;
     }
 
     .content{
@@ -110,8 +233,8 @@
     .metaRow h2{
       margin: 0;
       font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      font-weight: 850;
+      letter-spacing: -0.015em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -134,33 +257,57 @@
       display: flex;
       align-items: baseline;
       gap: 12px;
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding: 11px 12px;
+      border-radius: 16px;
       border: 1px solid rgba(0,0,0,.06);
       background: rgba(255,255,255,.62);
-      transition: transform .08s ease, background .08s ease;
+      transition: transform .10s ease, background .12s ease, border-color .12s ease;
       min-width: 0;
+      position: relative;
+      overflow: hidden;
     }
+    @media (prefers-color-scheme: dark){
+      .item{
+        border-color: rgba(255,255,255,.12);
+        background: rgba(255,255,255,.06);
+      }
+      .item:hover{
+        background: rgba(255,255,255,.09);
+        border-color: rgba(255,255,255,.18);
+      }
+    }
+
+    .item::before{
+      content:"";
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width: 4px;
+      background: var(--brandLine, rgba(0,0,0,.12));
+      border-radius: 999px;
+    }
+
     .item:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,.82);
+      border-color: rgba(0,0,0,.10);
     }
 
-    .title{
+    .titleLink{
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 650;
       letter-spacing: -0.01em;
       min-width: 0;
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      padding-left: 6px;
     }
-    .title a{
+    .titleLink a{
       color: inherit;
       text-decoration: none;
     }
-    .title a:hover{ text-decoration: underline; }
+    .titleLink a:hover{ text-decoration: underline; }
 
     .dt{
       font-size: 12px;
@@ -176,29 +323,51 @@
       padding: 8px 0 0;
     }
 
-    @media (max-width: 740px){
+    @media (max-width: 860px){
+      .wrap{ padding: 8px 12px 48px; }
+      .topbarInner{ padding: 12px 12px; }
       .sectionInner{ flex-direction: column !important; }
-      .brand{ flex: 0 0 auto; min-height: 90px; }
-      .brand img{ max-width: 140px; max-height: 40px; }
-      .title{ white-space: normal; }
+      .brand{ flex: 0 0 auto; min-height: 120px; }
+      .brand img{ max-width: 260px; max-height: 84px; }
+      .titleLink{ white-space: normal; }
+      .item{ align-items: flex-start; }
+      header{ padding-top: 26px; }
     }
   </style>
 </head>
 
 <body>
+  <div class="topbar">
+    <div class="topbarInner">
+      <div class="brandTitle">
+        <div class="title">Reading Dashboard</div>
+        <div class="subtitle" id="todayLine">—</div>
+      </div>
+
+      <div class="topbarRight">
+        <div class="pill" id="lastRefresh">Last refresh: —</div>
+        <button class="btn" id="btnRefresh" type="button">Refresh</button>
+      </div>
+    </div>
+  </div>
+
   <header>
-    <h1>Reading Dashboard</h1>
-    <p>Latest headlines (10) — title + date/time only</p>
+    <h1>Latest headlines</h1>
+    <p>10 newest per source • title + date/time only</p>
   </header>
 
   <main class="wrap">
 
     <!-- NYTimes -->
-    <section class="section" data-layout="logo-left" data-feed="nyt">
+    <section class="section"
+      data-layout="logo-left"
+      style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
       <div class="sectionInner">
-        <div class="brand">
-          <img alt="The New York Times" src="https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg">
+        <div class="brand" aria-label="NYTimes logo">
+          <img alt="The New York Times"
+               src="https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg">
         </div>
+
         <div class="content">
           <div class="metaRow">
             <h2>The New York Times</h2>
@@ -210,11 +379,15 @@
     </section>
 
     <!-- The Economist -->
-    <section class="section" data-layout="logo-right" data-feed="economist">
+    <section class="section"
+      data-layout="logo-right"
+      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .60); --glow-x: 82%;">
       <div class="sectionInner">
-        <div class="brand">
-          <img alt="The Economist" src="https://upload.wikimedia.org/wikipedia/commons/6/65/The_Economist_Logo.svg">
+        <div class="brand" aria-label="The Economist logo">
+          <img alt="The Economist"
+               src="https://upload.wikimedia.org/wikipedia/commons/6/65/The_Economist_Logo.svg">
         </div>
+
         <div class="content">
           <div class="metaRow">
             <h2>The Economist</h2>
@@ -226,11 +399,15 @@
     </section>
 
     <!-- The Verge -->
-    <section class="section" data-layout="logo-left" data-feed="verge">
+    <section class="section"
+      data-layout="logo-left"
+      style="--brandGlow: rgba(0, 180, 120, .18); --brandLine: rgba(0, 180, 120, .66); --glow-x: 20%;">
       <div class="sectionInner">
-        <div class="brand">
-          <img alt="The Verge" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Verge_Logo.svg">
+        <div class="brand" aria-label="The Verge logo">
+          <img alt="The Verge"
+               src="https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Verge_Logo.svg">
         </div>
+
         <div class="content">
           <div class="metaRow">
             <h2>The Verge</h2>
@@ -242,25 +419,16 @@
     </section>
 
     <div class="footerNote">
-      Tip: rss2json free tier has limits — refresh if needed, or switch to Cloudflare Worker later.
+      Using rss2json (free tier has limits). If it flakes, try refresh later.
     </div>
 
   </main>
 
   <script>
     const FEEDS = [
-      {
-        key: "nyt",
-        rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
-      },
-      {
-        key: "economist",
-        rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml"
-      },
-      {
-        key: "verge",
-        rssUrl: "https://www.theverge.com/rss/index.xml"
-      }
+      { key: "nyt", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
+      { key: "economist", rssUrl: "https://rss.app/feeds/wrqFjVCwWDyZq4GL.xml" },
+      { key: "verge", rssUrl: "https://www.theverge.com/rss/index.xml" }
     ];
 
     const MAX_ITEMS = 10;
@@ -269,8 +437,12 @@
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return "";
       return new Intl.DateTimeFormat(undefined, {
-        weekday:"short", year:"numeric", month:"short", day:"2-digit",
-        hour:"2-digit", minute:"2-digit"
+        weekday:"short",
+        year:"numeric",
+        month:"short",
+        day:"2-digit",
+        hour:"2-digit",
+        minute:"2-digit"
       }).format(d);
     }
 
@@ -282,23 +454,26 @@
     function setItems(key, items) {
       const ul = document.getElementById(`list-${key}`);
       if (!ul) return;
+
       ul.innerHTML = "";
+
       items.slice(0, MAX_ITEMS).forEach(item => {
         const li = document.createElement("li");
         li.className = "item";
 
         const title = document.createElement("div");
-        title.className = "title";
+        title.className = "titleLink";
+
         const a = document.createElement("a");
         a.href = item.link || "#";
         a.target = "_blank";
         a.rel = "noopener noreferrer";
-        a.textContent = item.title || "";
+        a.textContent = (item.title || "").trim() || "Untitled";
         title.appendChild(a);
 
         const dt = document.createElement("div");
         dt.className = "dt";
-        dt.textContent = formatDateTime(item.pubDate || item.pubDate);
+        dt.textContent = formatDateTime(item.pubDate || item.published || item.date || "");
 
         li.appendChild(title);
         li.appendChild(dt);
@@ -308,11 +483,30 @@
 
     async function fetchViaRss2Json(rssUrl) {
       const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
-      const res = await fetch(endpoint);
+      const res = await fetch(endpoint, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      if (data.status !== "ok") throw new Error(data.message || "RSS parse error");
+      if (data.status !== "ok") throw new Error(data.message || "rss2json error");
       return data.items || [];
+    }
+
+    function setLastRefresh() {
+      const el = document.getElementById("lastRefresh");
+      if (!el) return;
+      const now = new Date();
+      const txt = new Intl.DateTimeFormat(undefined, {
+        weekday:"short", hour:"2-digit", minute:"2-digit"
+      }).format(now);
+      el.textContent = `Last refresh: ${txt}`;
+    }
+
+    function setTodayLine() {
+      const el = document.getElementById("todayLine");
+      if (!el) return;
+      const now = new Date();
+      el.textContent = new Intl.DateTimeFormat(undefined, {
+        weekday:"long", year:"numeric", month:"long", day:"numeric"
+      }).format(now);
     }
 
     async function loadFeed(feed) {
@@ -328,9 +522,19 @@
       }
     }
 
-    (async () => {
+    async function refreshAll() {
+      document.getElementById("btnRefresh")?.setAttribute("disabled", "true");
       for (const f of FEEDS) await loadFeed(f);
-    })();
+      setLastRefresh();
+      document.getElementById("btnRefresh")?.removeAttribute("disabled");
+    }
+
+    // Init
+    setTodayLine();
+    refreshAll();
+
+    // Button
+    document.getElementById("btnRefresh")?.addEventListener("click", refreshAll);
   </script>
 </body>
 </html>
