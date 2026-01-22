@@ -514,27 +514,6 @@
       </div>
     </section>
 
-    <!-- The New Yorker -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-newyorker">
-          <img class="coverImg" id="coverImg-newyorker" alt="The New Yorker cover" />
-          <div class="coverTitle">The New Yorker</div>
-          <div class="coverSub" id="coverSub-newyorker"></div>
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The New Yorker</h2>
-            <div class="status" id="status-newyorker">Loading…</div>
-          </div>
-          <ul class="items" id="list-newyorker"></ul>
-        </div>
-      </div>
-    </section>
-
     <!-- The Verge (purple) -->
     <section class="section"
       data-layout="logo-left"
@@ -577,6 +556,27 @@
       </div>
     </section>
 
+    <!-- The New Yorker -->
+    <section class="section"
+      data-layout="logo-right"
+      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-newyorker">
+          <img class="coverImg" id="coverImg-newyorker" alt="The New Yorker cover" />
+          <div class="coverTitle">The New Yorker</div>
+          <div class="coverSub" id="coverSub-newyorker"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>The New Yorker</h2>
+            <div class="status" id="status-newyorker">Loading…</div>
+          </div>
+          <ul class="items" id="list-newyorker"></ul>
+        </div>
+      </div>
+    </section>
+
     <div class="footerNote">
       Using rss2json (free tier has limits). If it flakes, hit refresh later.
     </div>
@@ -586,9 +586,9 @@
   <script>
     const FEEDS = [
       { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" },
       { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" },
-      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" }
+      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" },
+      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" }
     ];
 
     const MAX_ITEMS = 10;
