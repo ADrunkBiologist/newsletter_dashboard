@@ -493,10 +493,31 @@
 
   <main class="wrap">
 
-    <!-- NYTimes -->
+    <!-- Reuters -->
     <section class="section"
       data-layout="logo-left"
-      style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 18%;">
+      style="--brandGlow: rgba(5, 90, 170, .20); --brandLine: rgba(5, 90, 170, .65); --glow-x: 18%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-reuters">
+          <img class="coverImg" id="coverImg-reuters" alt="Reuters cover" />
+          <div class="coverTitle">Reuters</div>
+          <div class="coverSub" id="coverSub-reuters"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>Reuters</h2>
+            <div class="status" id="status-reuters">Loading…</div>
+          </div>
+          <ul class="items" id="list-reuters"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- NYTimes -->
+    <section class="section"
+      data-layout="logo-right"
+      style="--brandGlow: rgba(0,0,0,.10); --brandLine: rgba(0,0,0,.35); --glow-x: 82%;">
       <div class="sectionInner">
         <div class="cover" id="cover-nyt">
           <img class="coverImg" id="coverImg-nyt" alt="NYT cover" />
@@ -510,27 +531,6 @@
             <div class="status" id="status-nyt">Loading…</div>
           </div>
           <ul class="items" id="list-nyt"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- The New Yorker -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-newyorker">
-          <img class="coverImg" id="coverImg-newyorker" alt="The New Yorker cover" />
-          <div class="coverTitle">The New Yorker</div>
-          <div class="coverSub" id="coverSub-newyorker"></div>
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The New Yorker</h2>
-            <div class="status" id="status-newyorker">Loading…</div>
-          </div>
-          <ul class="items" id="list-newyorker"></ul>
         </div>
       </div>
     </section>
@@ -577,6 +577,27 @@
       </div>
     </section>
 
+    <!-- The New Yorker -->
+    <section class="section"
+      data-layout="logo-left"
+      style="--brandGlow: rgba(230, 0, 0, .16); --brandLine: rgba(230, 0, 0, .65); --glow-x: 18%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-newyorker">
+          <img class="coverImg" id="coverImg-newyorker" alt="The New Yorker cover" />
+          <div class="coverTitle">The New Yorker</div>
+          <div class="coverSub" id="coverSub-newyorker"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>The New Yorker</h2>
+            <div class="status" id="status-newyorker">Loading…</div>
+          </div>
+          <ul class="items" id="list-newyorker"></ul>
+        </div>
+      </div>
+    </section>
+
     <div class="footerNote">
       Using rss2json (free tier has limits). If it flakes, hit refresh later.
     </div>
@@ -585,16 +606,17 @@
 
   <script>
     const FEEDS = [
+      { key: "reuters", name: "Reuters", rssUrl: "https://news.google.com/rss/search?q=site%3Areuters.com&hl=en-US&gl=US&ceid=US%3Aen" },
       { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" },
       { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" },
-      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" }
+      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" },
+      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" }
     ];
 
     const MAX_ITEMS = 10;
     const AUTO_REFRESH_MINUTES = 20;
 
-    /* ===== Added: freshness sorting + NYT-only BREAKING badge ===== */
+    /* ===== Added: freshness sorting + BREAKING badge ===== */
     const BREAKING_HOURS = 2;
 
     function getItemDate(item) {
@@ -611,7 +633,7 @@
       });
     }
 
-    function isBreakingNYT(item) {
+    function isBreakingItem(item) {
       const d = getItemDate(item);
       if (!d) return false;
       const ageMs = Date.now() - d.getTime();
@@ -666,8 +688,8 @@
         const metaInline = document.createElement("div");
         metaInline.className = "metaInline";
 
-        // NYT-only BREAKING badge
-        if (key === "nyt" && isBreakingNYT(item)) {
+        // NYT + Reuters BREAKING badge
+        if ((key === "nyt" || key === "reuters") && isBreakingItem(item)) {
           const badge = document.createElement("span");
           badge.className = "badgeBreaking";
           badge.textContent = "BREAKING";
