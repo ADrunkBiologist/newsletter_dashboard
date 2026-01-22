@@ -514,6 +514,48 @@
       </div>
     </section>
 
+    <!-- The Verge (purple) -->
+    <section class="section"
+      data-layout="logo-right"
+      style="--brandGlow: rgba(175, 0, 255, .22); --brandLine: rgba(175, 0, 255, .72); --glow-x: 82%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-verge">
+          <img class="coverImg" id="coverImg-verge" alt="The Verge cover" />
+          <div class="coverTitle">The Verge</div>
+          <div class="coverSub" id="coverSub-verge"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>The Verge</h2>
+            <div class="status" id="status-verge">Loading…</div>
+          </div>
+          <ul class="items" id="list-verge"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Intercept -->
+    <section class="section"
+      data-layout="logo-left"
+      style="--brandGlow: rgba(0, 140, 90, .22); --brandLine: rgba(0, 140, 90, .65); --glow-x: 20%;">
+      <div class="sectionInner">
+        <div class="cover" id="cover-intercept">
+          <img class="coverImg" id="coverImg-intercept" alt="The Intercept cover" />
+          <div class="coverTitle">The Intercept</div>
+          <div class="coverSub" id="coverSub-intercept"></div>
+        </div>
+
+        <div class="content">
+          <div class="metaRow">
+            <h2>The Intercept</h2>
+            <div class="status" id="status-intercept">Loading…</div>
+          </div>
+          <ul class="items" id="list-intercept"></ul>
+        </div>
+      </div>
+    </section>
+
     <!-- The New Yorker -->
     <section class="section"
       data-layout="logo-right"
@@ -535,48 +577,6 @@
       </div>
     </section>
 
-    <!-- The Verge (purple) -->
-    <section class="section"
-      data-layout="logo-left"
-      style="--brandGlow: rgba(175, 0, 255, .22); --brandLine: rgba(175, 0, 255, .72); --glow-x: 20%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-verge">
-          <img class="coverImg" id="coverImg-verge" alt="The Verge cover" />
-          <div class="coverTitle">The Verge</div>
-          <div class="coverSub" id="coverSub-verge"></div>
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Verge</h2>
-            <div class="status" id="status-verge">Loading…</div>
-          </div>
-          <ul class="items" id="list-verge"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- The Intercept -->
-    <section class="section"
-      data-layout="logo-right"
-      style="--brandGlow: rgba(0, 140, 90, .22); --brandLine: rgba(0, 140, 90, .65); --glow-x: 82%;">
-      <div class="sectionInner">
-        <div class="cover" id="cover-intercept">
-          <img class="coverImg" id="coverImg-intercept" alt="The Intercept cover" />
-          <div class="coverTitle">The Intercept</div>
-          <div class="coverSub" id="coverSub-intercept"></div>
-        </div>
-
-        <div class="content">
-          <div class="metaRow">
-            <h2>The Intercept</h2>
-            <div class="status" id="status-intercept">Loading…</div>
-          </div>
-          <ul class="items" id="list-intercept"></ul>
-        </div>
-      </div>
-    </section>
-
     <div class="footerNote">
       Using rss2json (free tier has limits). If it flakes, hit refresh later.
     </div>
@@ -586,9 +586,9 @@
   <script>
     const FEEDS = [
       { key: "nyt", name: "NYTimes", rssUrl: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" },
-      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" },
       { key: "verge", name: "The Verge", rssUrl: "https://www.theverge.com/rss/index.xml" },
-      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" }
+      { key: "intercept", name: "The Intercept", rssUrl: "https://theintercept.com/feed/" },
+      { key: "newyorker", name: "The New Yorker", rssUrl: "https://www.newyorker.com/feed/everything" }
     ];
 
     const MAX_ITEMS = 10;
